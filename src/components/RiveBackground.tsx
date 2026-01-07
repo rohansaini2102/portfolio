@@ -72,7 +72,8 @@ export default function RiveBackground({ className }: RiveBackgroundProps) {
         artboard?: { textRun?: (name: string) => { text?: string } | null };
       }
     ).artboard;
-    if (!artboard?.textRun) {
+    const textRunLookup = artboard?.textRun;
+    if (!textRunLookup) {
       return;
     }
 
@@ -89,7 +90,7 @@ export default function RiveBackground({ className }: RiveBackgroundProps) {
       if (cancelled) {
         return;
       }
-      const textRun = artboard.textRun(name);
+      const textRun = textRunLookup(name);
       if (textRun) {
         textRun.text = "";
         textRuns.push(textRun);
