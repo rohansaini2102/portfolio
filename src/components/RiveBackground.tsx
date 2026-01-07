@@ -72,10 +72,11 @@ export default function RiveBackground({ className }: RiveBackgroundProps) {
         artboard?: { textRun?: (name: string) => { text?: string } | null };
       }
     ).artboard;
-    const textRunLookup = artboard?.textRun;
-    if (!textRunLookup) {
+    if (!artboard?.textRun) {
       return;
     }
+
+    const textRunLookup = artboard.textRun.bind(artboard);
 
     let cancelled = false;
     const textRuns: { text?: string }[] = [];
