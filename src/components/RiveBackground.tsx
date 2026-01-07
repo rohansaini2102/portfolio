@@ -68,7 +68,9 @@ export default function RiveBackground({ className }: RiveBackgroundProps) {
     }
 
     const artboard = (
-      rive as { artboard?: { textRun?: (name: string) => { text?: string } | null } }
+      rive as unknown as {
+        artboard?: { textRun?: (name: string) => { text?: string } | null };
+      }
     ).artboard;
     if (!artboard?.textRun) {
       return;
