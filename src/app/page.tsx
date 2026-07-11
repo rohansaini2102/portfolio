@@ -259,6 +259,10 @@ export default function Home() {
   const activeTheme = themes[themeIndex];
 
   useEffect(() => {
+    // Sync to the client's real local time on mount so the clock corrects
+    // immediately instead of waiting for the first interval tick.
+    setLocalTime(formatTime());
+
     const interval = window.setInterval(() => {
       setLocalTime(formatTime());
     }, 1000);
@@ -299,7 +303,10 @@ export default function Home() {
                 {activeTheme.label}
               </span>
             </button>
-            <div className="rounded-full border border-slate-900/70 bg-slate-900/80 px-4 py-2 text-xs font-semibold text-white/90 shadow-lg shadow-black/20">
+            <div
+              suppressHydrationWarning
+              className="rounded-full border border-slate-900/70 bg-slate-900/80 px-4 py-2 text-xs font-semibold text-white/90 shadow-lg shadow-black/20"
+            >
               {localTime} Local
             </div>
           </div>
