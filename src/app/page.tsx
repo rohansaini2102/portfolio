@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import RiveBackground from "@/components/RiveBackground";
+import ProjectArtwork from "@/components/ProjectArtwork";
+import { useThemeIndex } from "@/lib/useThemeIndex";
+import { projects } from "@/lib/projects";
 
 type IconProps = {
   className?: string;
@@ -69,39 +73,6 @@ const profile = {
   headline:
     "I design and build modern web products with clean UX, scalable systems, and fast execution.",
 };
-
-const themes = [
-  {
-    id: "original",
-    label: "Original",
-    overlayClass: "from-transparent via-transparent to-transparent",
-    previewClass: "from-slate-200 to-white",
-  },
-  {
-    id: "pearl",
-    label: "Pearl",
-    overlayClass: "from-slate-200/30 via-rose-100/20 to-white/10",
-    previewClass: "from-slate-300 to-rose-200",
-  },
-  {
-    id: "ocean",
-    label: "Ocean",
-    overlayClass: "from-sky-200/30 via-cyan-100/20 to-emerald-100/20",
-    previewClass: "from-sky-300 to-emerald-200",
-  },
-  {
-    id: "mono",
-    label: "Mono",
-    overlayClass: "from-slate-300/25 via-slate-100/20 to-white/15",
-    previewClass: "from-slate-400 to-slate-200",
-  },
-  {
-    id: "royal",
-    label: "Royal",
-    overlayClass: "from-indigo-200/25 via-blue-100/20 to-cyan-100/20",
-    previewClass: "from-indigo-300 to-cyan-200",
-  },
-];
 
 const navItems = [
   { id: "home", label: "Home", isActive: true },
@@ -206,45 +177,6 @@ const stats = [
   { label: "Availability", value: "Open for select work" },
 ];
 
-const experiences = [
-  {
-    id: "devops",
-    title: "Multi-Environment DevOps Automation",
-    timeline: "Jan 2025 - Present",
-    level: "Advanced",
-    summary:
-      "A practical DevOps project demonstrating multi-environment containerization, automated CI/CD pipelines, and production-grade deployment flows.",
-    confidentiality: "Codebase is confidential",
-    coverClass: "from-emerald-200 via-slate-100 to-emerald-100",
-    tags: ["Docker", "GitHub Actions", "PM2", "NGINX", "Node.js", "Bash"],
-    extraTags: 4,
-  },
-  {
-    id: "formula",
-    title: "Formula",
-    timeline: "Oct 2024 - Present",
-    level: "Advanced",
-    summary:
-      "A full-scale ecommerce platform built as a direct competitor to Tira Beauty. Architected and developed end-to-end with 70,000+ lines of code.",
-    confidentiality: "Codebase is confidential",
-    coverClass: "from-rose-200 via-amber-100 to-rose-100",
-    tags: ["Next.js", "React", "Tailwind CSS", "Shiprocket", "Razorpay"],
-    extraTags: 1,
-  },
-  {
-    id: "win",
-    title: "Word Impact Network Backend",
-    timeline: "Apr 2025 - Present",
-    level: "Advanced",
-    summary:
-      "A production-grade LMS backend with 88+ API endpoints, dual authentication, course management, progress tracking, and assessment workflows.",
-    confidentiality: "Codebase is confidential",
-    coverClass: "from-slate-200 via-sky-100 to-slate-100",
-    tags: ["Node.js", "Express.js", "TypeScript", "Prisma ORM", "PostgreSQL", "Redis"],
-    extraTags: 6,
-  },
-];
-
 const formatTime = () =>
   new Intl.DateTimeFormat("en-GB", {
     hour: "2-digit",
@@ -254,15 +186,13 @@ const formatTime = () =>
   }).format(new Date());
 
 export default function Home() {
-  const [themeIndex, setThemeIndex] = useState(0);
+  const { activeTheme, cycleTheme } = useThemeIndex();
   const [localTime, setLocalTime] = useState(formatTime);
-  const activeTheme = themes[themeIndex];
 
   useEffect(() => {
-    // Sync to the client's real local time on mount so the clock corrects
-    // immediately instead of waiting for the first interval tick.
-    setLocalTime(formatTime());
-
+    // The useState(formatTime) initializer already renders the client's current
+    // time on mount; suppressHydrationWarning on the clock element handles the
+    // SSR/client difference. Here we just keep it ticking every second.
     const interval = window.setInterval(() => {
       setLocalTime(formatTime());
     }, 1000);
@@ -291,7 +221,7 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setThemeIndex((prev) => (prev + 1) % themes.length)}
+              onClick={cycleTheme}
               className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/40 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm shadow-white/30 backdrop-blur-xl transition hover:border-white/80 hover:bg-white/60"
             >
               <span
@@ -575,65 +505,70 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {experiences.map((experience) => (
-              <article
-                key={experience.id}
-                className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30"
-              >
-                <div
-                  className={`relative h-40 overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br ${experience.coverClass}`}
+            {projects.map((project) => {
+              const hiddenTags = project.tags.length - project.cardTagCount;
+              return (
+                <article
+                  key={project.slug}
+                  className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30"
                 >
-                  <div className="absolute inset-4 rounded-2xl border border-white/80 bg-white/70 shadow-sm" />
-                  <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
-                  <div className="absolute bottom-5 right-5 h-12 w-12 rounded-xl bg-white/80 shadow-sm" />
-                </div>
-                <div className="mt-4 flex flex-1 flex-col gap-4">
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon className="h-4 w-4 text-slate-400" />
-                      <span>{experience.timeline}</span>
-                    </div>
-                    <span className="rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-600">
-                      {experience.level}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      {experience.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-slate-600">
-                      {experience.summary}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <LockIcon className="h-4 w-4 text-slate-400" />
-                    <span>{experience.confidentiality}</span>
-                  </div>
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    {experience.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {experience.extraTags ? (
-                      <span className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-500 shadow-sm shadow-white/40 backdrop-blur-xl">
-                        +{experience.extraTags}
-                      </span>
-                    ) : null}
-                  </div>
-                  <button
-                    type="button"
-                    className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+                  <div
+                    className={`relative h-40 overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br ${project.coverClass}`}
                   >
-                    View full detail
-                    <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </button>
-                </div>
-              </article>
-            ))}
+                    <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
+                    <ProjectArtwork
+                      kind={project.artwork}
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                  <div className="mt-4 flex flex-1 flex-col gap-4">
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-4 w-4 text-slate-400" />
+                        <span>{project.timeline}</span>
+                      </div>
+                      <span className="rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-600">
+                        {project.level}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-slate-600">
+                        {project.summary}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500">
+                      <LockIcon className="h-4 w-4 text-slate-400" />
+                      <span>{project.confidentiality}</span>
+                    </div>
+                    <div className="mt-auto flex flex-wrap gap-2">
+                      {project.tags.slice(0, project.cardTagCount).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {hiddenTags > 0 ? (
+                        <span className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-500 shadow-sm shadow-white/40 backdrop-blur-xl">
+                          +{hiddenTags}
+                        </span>
+                      ) : null}
+                    </div>
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+                    >
+                      View full detail
+                      <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       </div>
