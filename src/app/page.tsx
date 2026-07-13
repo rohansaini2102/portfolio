@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import RiveBackground from "@/components/RiveBackground";
 
 type IconProps = {
@@ -103,10 +104,18 @@ const themes = [
   },
 ];
 
-const navItems = [
+type NavItem = {
+  id: string;
+  label: string;
+  isActive?: boolean;
+  href?: string;
+};
+
+const navItems: NavItem[] = [
   { id: "home", label: "Home", isActive: true },
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
+  { id: "puzzle-dojo", label: "Puzzle Dojo", href: "/puzzle-dojo" },
   { id: "articles", label: "Articles" },
 ];
 
@@ -506,20 +515,28 @@ export default function Home() {
         </section>
 
         <nav className="mt-10 flex flex-wrap items-center gap-2">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-current={item.isActive ? "page" : undefined}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                item.isActive
-                  ? "border border-white/70 bg-white/70 text-slate-900 shadow-sm shadow-white/40"
-                  : "border border-white/40 bg-white/30 text-slate-600 hover:bg-white/60"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const className = `rounded-full px-4 py-2 text-sm font-medium transition ${
+              item.isActive
+                ? "border border-white/70 bg-white/70 text-slate-900 shadow-sm shadow-white/40"
+                : "border border-white/40 bg-white/30 text-slate-600 hover:bg-white/60"
+            }`;
+
+            return item.href ? (
+              <Link key={item.id} href={item.href} className={className}>
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                key={item.id}
+                type="button"
+                aria-current={item.isActive ? "page" : undefined}
+                className={className}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
 
         <section className="mt-12">
@@ -627,6 +644,74 @@ export default function Home() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mt-16" id="projects">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                Projects
+              </p>
+              <h2 className="text-2xl font-semibold text-slate-900">
+                Apps I have shipped
+              </h2>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            <article className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30">
+              <Link
+                href="/puzzle-dojo"
+                className="relative flex h-40 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br from-indigo-300 via-sky-200 to-cyan-200"
+              >
+                <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
+                <span className="text-6xl" aria-hidden="true">
+                  🧩
+                </span>
+              </Link>
+              <div className="mt-4 flex flex-1 flex-col gap-4">
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span>Mobile Game</span>
+                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-600">
+                    Live
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    Puzzle Dojo
+                  </h3>
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    A minimalist brain-training puzzle game. Sharpen your mind
+                    one puzzle at a time with calm visuals and satisfying logic.
+                  </p>
+                </div>
+                <div className="mt-auto flex flex-wrap gap-2">
+                  {["iOS", "Android", "React Native", "Offline"].map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-4 pt-1">
+                  <Link
+                    href="/puzzle-dojo"
+                    className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+                  >
+                    View app
+                    <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </Link>
+                  <a
+                    href="/puzzle-dojo/privacy/index.html"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+                  >
+                    Privacy Policy
+                  </a>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
       </div>
