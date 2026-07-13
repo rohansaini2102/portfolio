@@ -215,7 +215,22 @@ const stats = [
   { label: "Availability", value: "Open for select work" },
 ];
 
-const experiences = [
+type Experience = {
+  id: string;
+  title: string;
+  timeline: string;
+  level: string;
+  summary: string;
+  confidentiality: string;
+  coverClass: string;
+  tags: string[];
+  extraTags?: number;
+  href?: string;
+  privacyHref?: string;
+  emoji?: string;
+};
+
+const experiences: Experience[] = [
   {
     id: "devops",
     title: "Multi-Environment DevOps Automation",
@@ -229,16 +244,18 @@ const experiences = [
     extraTags: 4,
   },
   {
-    id: "formula",
-    title: "Formula",
-    timeline: "Oct 2024 - Present",
-    level: "Advanced",
+    id: "puzzle-dojo",
+    title: "Puzzle Dojo",
+    timeline: "2025 - Present",
+    level: "Live",
     summary:
-      "A full-scale ecommerce platform built as a direct competitor to Tira Beauty. Architected and developed end-to-end with 70,000+ lines of code.",
-    confidentiality: "Codebase is confidential",
-    coverClass: "from-rose-200 via-amber-100 to-rose-100",
-    tags: ["Next.js", "React", "Tailwind CSS", "Shiprocket", "Razorpay"],
-    extraTags: 1,
+      "A minimalist brain-training puzzle game. Sharpen your mind one puzzle at a time with calm visuals and satisfying logic.",
+    confidentiality: "Available on iOS & Android",
+    coverClass: "from-indigo-300 via-sky-200 to-cyan-200",
+    tags: ["iOS", "Android", "React Native", "Offline"],
+    href: "/puzzle-dojo",
+    privacyHref: "/puzzle-dojo/privacy/index.html",
+    emoji: "🧩",
   },
   {
     id: "win",
@@ -585,133 +602,117 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {experiences.map((experience) => (
-              <article
-                key={experience.id}
-                className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30"
-              >
-                <div
-                  className={`relative h-40 overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br ${experience.coverClass}`}
-                >
+            {experiences.map((experience) => {
+              const isApp = Boolean(experience.href);
+              const coverClassName = `relative h-40 overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br ${experience.coverClass}`;
+              const cover = experience.emoji ? (
+                <>
+                  <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
+                  <span
+                    className="grid h-full w-full place-items-center text-6xl"
+                    aria-hidden="true"
+                  >
+                    {experience.emoji}
+                  </span>
+                </>
+              ) : (
+                <>
                   <div className="absolute inset-4 rounded-2xl border border-white/80 bg-white/70 shadow-sm" />
                   <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
                   <div className="absolute bottom-5 right-5 h-12 w-12 rounded-xl bg-white/80 shadow-sm" />
-                </div>
-                <div className="mt-4 flex flex-1 flex-col gap-4">
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon className="h-4 w-4 text-slate-400" />
-                      <span>{experience.timeline}</span>
-                    </div>
-                    <span className="rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-600">
-                      {experience.level}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      {experience.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-slate-600">
-                      {experience.summary}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <LockIcon className="h-4 w-4 text-slate-400" />
-                    <span>{experience.confidentiality}</span>
-                  </div>
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    {experience.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {experience.extraTags ? (
-                      <span className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-500 shadow-sm shadow-white/40 backdrop-blur-xl">
-                        +{experience.extraTags}
-                      </span>
-                    ) : null}
-                  </div>
-                  <button
-                    type="button"
-                    className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
-                  >
-                    View full detail
-                    <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+                </>
+              );
 
-        <section className="mt-16" id="projects">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                Projects
-              </p>
-              <h2 className="text-2xl font-semibold text-slate-900">
-                Apps I have shipped
-              </h2>
-            </div>
-          </div>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            <article className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30">
-              <Link
-                href="/puzzle-dojo"
-                className="relative flex h-40 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br from-indigo-300 via-sky-200 to-cyan-200"
-              >
-                <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/60 blur-2xl" />
-                <span className="text-6xl" aria-hidden="true">
-                  🧩
-                </span>
-              </Link>
-              <div className="mt-4 flex flex-1 flex-col gap-4">
-                <div className="flex items-center justify-between text-xs text-slate-500">
-                  <span>Mobile Game</span>
-                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-600">
-                    Live
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    Puzzle Dojo
-                  </h3>
-                  <p className="text-sm leading-relaxed text-slate-600">
-                    A minimalist brain-training puzzle game. Sharpen your mind
-                    one puzzle at a time with calm visuals and satisfying logic.
-                  </p>
-                </div>
-                <div className="mt-auto flex flex-wrap gap-2">
-                  {["iOS", "Android", "React Native", "Offline"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex flex-wrap items-center gap-4 pt-1">
-                  <Link
-                    href="/puzzle-dojo"
-                    className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
-                  >
-                    View app
-                    <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </Link>
-                  <a
-                    href="/puzzle-dojo/privacy/index.html"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-                  >
-                    Privacy Policy
-                  </a>
-                </div>
-              </div>
-            </article>
+              return (
+                <article
+                  key={experience.id}
+                  className="flex h-full flex-col rounded-3xl border border-white/50 bg-white/45 p-4 shadow-xl shadow-slate-900/10 backdrop-blur-2xl ring-1 ring-white/30"
+                >
+                  {isApp && experience.href ? (
+                    <Link href={experience.href} className={`block ${coverClassName}`}>
+                      {cover}
+                    </Link>
+                  ) : (
+                    <div className={coverClassName}>{cover}</div>
+                  )}
+                  <div className="mt-4 flex flex-1 flex-col gap-4">
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-4 w-4 text-slate-400" />
+                        <span>{experience.timeline}</span>
+                      </div>
+                      <span
+                        className={`rounded-full border px-2 py-1 text-[11px] font-semibold ${
+                          isApp
+                            ? "border-emerald-200 bg-emerald-50 text-emerald-600"
+                            : "border-rose-200 bg-rose-50 text-rose-600"
+                        }`}
+                      >
+                        {experience.level}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        {experience.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-slate-600">
+                        {experience.summary}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500">
+                      {isApp ? (
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      ) : (
+                        <LockIcon className="h-4 w-4 text-slate-400" />
+                      )}
+                      <span>{experience.confidentiality}</span>
+                    </div>
+                    <div className="mt-auto flex flex-wrap gap-2">
+                      {experience.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-600 shadow-sm shadow-white/40 backdrop-blur-xl"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {experience.extraTags ? (
+                        <span className="rounded-full border border-white/70 bg-white/60 px-2.5 py-1 text-xs text-slate-500 shadow-sm shadow-white/40 backdrop-blur-xl">
+                          +{experience.extraTags}
+                        </span>
+                      ) : null}
+                    </div>
+                    {isApp && experience.href ? (
+                      <div className="flex flex-wrap items-center gap-4 pt-1">
+                        <Link
+                          href={experience.href}
+                          className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+                        >
+                          View app
+                          <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        </Link>
+                        {experience.privacyHref ? (
+                          <a
+                            href={experience.privacyHref}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+                          >
+                            Privacy Policy
+                          </a>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+                      >
+                        View full detail
+                        <ArrowUpRightIcon className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       </div>
