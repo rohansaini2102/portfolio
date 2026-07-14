@@ -15,7 +15,7 @@ export type EndpointGroup = { name: string; count: number };
 export type Feature = { title: string; description: string };
 export type StackGroup = { group: string; items: string[] };
 
-export type ProjectArtworkKind = "devops" | "commerce" | "backend";
+export type ProjectArtworkKind = "devops" | "commerce" | "backend" | "puzzle";
 
 export type Project = {
   slug: string;
@@ -48,6 +48,8 @@ export type Project = {
     blurb: string;
     platforms: string[];
     note: string;
+    /** Optional link to a hosted privacy policy (e.g. for app-store listing). */
+    privacyHref?: string;
   };
 };
 
@@ -79,6 +81,16 @@ const sky: Accent = {
   border: "border-sky-200",
   glow: "bg-sky-300/40",
   badge: "border-sky-200 bg-sky-50 text-sky-700",
+};
+
+const indigo: Accent = {
+  text: "text-indigo-700",
+  soft: "bg-indigo-50/70",
+  bar: "bg-indigo-400",
+  track: "bg-indigo-100",
+  border: "border-indigo-200",
+  glow: "bg-indigo-300/40",
+  badge: "border-indigo-200 bg-indigo-50 text-indigo-700",
 };
 
 export const projects: Project[] = [
@@ -217,6 +229,32 @@ export const projects: Project[] = [
       { group: "Edge", items: ["NGINX", "TLS"] },
       { group: "OS & Scripting", items: ["Linux", "Ubuntu VPS", "Bash", "SSH"] },
     ],
+  },
+  {
+    slug: "puzzle-dojo",
+    title: "Puzzle Dojo",
+    timeline: "2025 - Present",
+    level: "Launching",
+    summary:
+      "A minimalist brain-training puzzle game — sharpen your mind one puzzle at a time with calm visuals and satisfying logic.",
+    confidentiality: "Launching soon",
+    coverClass: "from-indigo-200 via-sky-100 to-cyan-100",
+    artwork: "puzzle",
+    accent: indigo,
+    tags: ["iOS", "Android", "React Native", "Expo", "Offline", "Mobile Game"],
+    cardTagCount: 5,
+    kind: "comingSoon",
+    tagline:
+      "A calm, minimalist brain-training puzzle game — launching on iOS & Android.",
+    comingSoon: {
+      headline: "Coming soon to iOS & Android",
+      blurb:
+        "Puzzle Dojo is a minimalist brain-training puzzle game built to be picked up anywhere — no account, no clutter. Handcrafted levels ramp from a gentle warm-up to a proper brain workout, with progress saved right on your device.",
+      platforms: ["iOS", "Android"],
+      note:
+        "A full walkthrough — design, level system, and screenshots — will live on this page once the app ships. The app's privacy policy is published below for the app-store listing.",
+      privacyHref: "/puzzle-dojo/privacy/index.html",
+    },
   },
   {
     slug: "formula",

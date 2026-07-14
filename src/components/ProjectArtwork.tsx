@@ -45,6 +45,7 @@ export default function ProjectArtwork({ kind, className }: ProjectArtworkProps)
       {kind === "devops" ? <DevOpsArt /> : null}
       {kind === "commerce" ? <CommerceArt /> : null}
       {kind === "backend" ? <BackendArt /> : null}
+      {kind === "puzzle" ? <PuzzleArt /> : null}
     </svg>
   );
 }
@@ -154,6 +155,56 @@ function BackendArt() {
       {/* header bar */}
       <rect x="150" y="34" width="130" height="6" rx="3" fill="#e2e8f0" />
       <rect x="150" y="34" width="52" height="6" rx="3" fill={accent} opacity="0.6" />
+    </g>
+  );
+}
+
+function PuzzleArt() {
+  const accent = "#6366f1";
+  const line = "#475569";
+  // Four interlocking puzzle tiles with connector knobs; one accent piece.
+  const tiles = [
+    { x: 150, y: 84, accent: false },
+    { x: 204, y: 84, accent: false },
+    { x: 150, y: 138, accent: false },
+    { x: 204, y: 138, accent: true },
+  ];
+  const knobs = [
+    { cx: 200, cy: 107 },
+    { cx: 173, cy: 134 },
+    { cx: 227, cy: 134 },
+    { cx: 200, cy: 161 },
+  ];
+  return (
+    <g>
+      {tiles.map((t, i) => (
+        <rect
+          key={i}
+          x={t.x}
+          y={t.y}
+          width="46"
+          height="46"
+          rx="9"
+          fill={t.accent ? "#eef2ff" : "#fff"}
+          stroke={t.accent ? accent : line}
+          strokeWidth="2"
+        />
+      ))}
+      {knobs.map((k, i) => (
+        <circle
+          key={i}
+          cx={k.cx}
+          cy={k.cy}
+          r="6"
+          fill="#fff"
+          stroke={line}
+          strokeWidth="2"
+        />
+      ))}
+      <circle cx="227" cy="161" r="4.5" fill={accent} />
+      {/* header bar */}
+      <rect x="150" y="34" width="120" height="6" rx="3" fill="#e2e8f0" />
+      <rect x="150" y="34" width="60" height="6" rx="3" fill={accent} opacity="0.6" />
     </g>
   );
 }

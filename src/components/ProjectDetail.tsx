@@ -397,6 +397,15 @@ function ComingSoon({ project }: { project: Project }) {
           <p className="max-w-2xl border-t border-white/60 pt-5 text-sm text-slate-500">
             {details.note}
           </p>
+          {details.privacyHref ? (
+            <a
+              href={details.privacyHref}
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${project.accent.badge}`}
+            >
+              View privacy policy
+              <span aria-hidden="true">→</span>
+            </a>
+          ) : null}
         </div>
       </div>
     </section>
