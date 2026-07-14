@@ -63,16 +63,6 @@ const emerald: Accent = {
   badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
 };
 
-const rose: Accent = {
-  text: "text-rose-600",
-  soft: "bg-rose-50/70",
-  bar: "bg-rose-400",
-  track: "bg-rose-100",
-  border: "border-rose-200",
-  glow: "bg-amber-300/40",
-  badge: "border-rose-200 bg-rose-50 text-rose-600",
-};
-
 const sky: Accent = {
   text: "text-sky-700",
   soft: "bg-sky-50/70",
@@ -254,31 +244,6 @@ export const projects: Project[] = [
       note:
         "A full walkthrough — design, level system, and screenshots — will live on this page once the app ships. The app's privacy policy is published below for the app-store listing.",
       privacyHref: "/puzzle-dojo/privacy/index.html",
-    },
-  },
-  {
-    slug: "formula",
-    title: "Formula",
-    timeline: "Oct 2024 - Present",
-    level: "Advanced",
-    summary:
-      "A full-scale ecommerce platform built as a direct competitor to Tira Beauty. Architected and developed end-to-end with 70,000+ lines of code.",
-    confidentiality: "Codebase is confidential",
-    coverClass: "from-rose-200 via-amber-100 to-rose-100",
-    artwork: "commerce",
-    accent: rose,
-    tags: ["Next.js", "React", "Tailwind CSS", "Shiprocket", "Razorpay", "Node.js"],
-    cardTagCount: 5,
-    kind: "comingSoon",
-    tagline:
-      "A full-scale beauty & cosmetics ecommerce platform — with native iOS and Android apps on the way.",
-    comingSoon: {
-      headline: "iOS & Android apps landing soon",
-      blurb:
-        "Formula is a full-scale ecommerce platform built end-to-end as a direct competitor to Tira Beauty. Native mobile apps for iOS and Android are in progress and will be hosted right here.",
-      platforms: ["iOS", "Android", "Web"],
-      note:
-        "A deep product walkthrough — architecture, storefront, checkout, and infographics — will live on this page once the apps ship.",
     },
   },
   {
